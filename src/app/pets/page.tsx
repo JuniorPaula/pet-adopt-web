@@ -2,6 +2,7 @@ import { Container } from "@/components/container";
 import { PetProps } from "@/types/pet.type";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const defaultImage = "/assets/no-image.png";
 
@@ -48,12 +49,23 @@ export default async function PetsPage() {
                 <p className="text-gray-600 text-sm">Peso: {pet.weight} Kg</p>
                 <p className="text-gray-600 text-sm">Porte: {pet.size}</p>
                 <p className="text-gray-600 text-sm">Cor: {pet.color}</p>
-                <button
-                  className={`px-4 py-2 mt-4 w-full ${pet.available ? 'bg-blue-500 text-white hover:bg-blue-400 transition-all duration-300' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
-                  disabled={!pet.available}
-                >
-                  {pet.available ? "Conhecer" : "Indisponível"}
-                </button>
+
+                { pet.available ? (
+                  <Link href={`/pets/${pet.id}`} className="w-full">
+                    <button
+                      className="px-4 py-2 mt-4 w-full bg-blue-500 text-white hover:bg-blue-400 transition-all duration-300"
+                    >
+                      Conhecer
+                    </button>
+                  </Link>
+                ) : (
+                  <button
+                    className="px-4 py-2 mt-4 w-full bg-gray-400 text-gray-700 cursor-not-allowed"
+                    disabled
+                  >
+                    Indisponível
+                  </button>
+                )}
               </div>
 
             </div>
