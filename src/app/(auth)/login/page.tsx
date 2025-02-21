@@ -35,7 +35,7 @@ export default function Page() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-4 mb-5 mt-2 border"
+            className="w-full p-2 mb-3 mt-2 border"
             required
           />
         </div>
@@ -47,7 +47,7 @@ export default function Page() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="******"
-            className="w-full p-4 mb-5 mt-2 border"
+            className="w-full p-2 mb-3 mt-2 border"
             required
           />
         </div>
