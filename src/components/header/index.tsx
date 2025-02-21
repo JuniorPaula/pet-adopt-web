@@ -21,6 +21,9 @@ export function Header() {
           <Link href="/perfil" className="text-lg font-semibold hover:text-blue-400 duration-200">
             Meu perfil
           </Link>
+          <Link href="/login" className="text-lg font-semibold hover:text-blue-400 duration-200">
+            Login
+          </Link>
         </div>
       </div>
     </header>

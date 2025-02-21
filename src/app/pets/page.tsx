@@ -6,7 +6,7 @@ import Image from "next/image";
 const defaultImage = "/assets/no-image.png";
 
 async function getPets() {
-  const response = await fetch(`${process.env.API_URL}/api/pets`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pets`, {
     next: { revalidate: 320 }
   });
 
@@ -33,7 +33,7 @@ export default async function PetsPage() {
             <div key={pet.id} className="bg-white py-4">
               <div className="relative w-full h-48 hover:transform hover:scale-105 transition-all duration-300">
                 <Image
-                  src={pet?.images?.[0] ? `${process.env.API_URL}${pet.images[0]}` : defaultImage}
+                  src={pet?.images?.[0] ? `${process.env.NEXT_PUBLIC_API_URL}${pet.images[0]}` : defaultImage}
                   alt={pet.name} 
                   className="object-cover border-2 border-gray-200"
                   fill
