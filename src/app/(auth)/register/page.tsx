@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { api } from "@/services/axios-service";
+import { createApi } from "@/services/axios-service";
 import Link from "next/link";
 
 interface RegisterFormData {
@@ -21,7 +21,9 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
+      const api = await createApi();
       await api.post("/api/register", data);
+
       toast.success("Registro realizado com sucesso!");
       router.push("/login");
     } catch (error: any) {
