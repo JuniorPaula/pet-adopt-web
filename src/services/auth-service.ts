@@ -9,7 +9,7 @@ type Credential = {
 
 export const loginUser = async (credentials: Credential) => {
   const c_token = await getTokenFromCookie()
-  const api = await createApi(c_token);
+  const api = createApi(c_token);
 
   const response = await api.post(`/api/login`, credentials);
   const { token, user } = response.data.data;

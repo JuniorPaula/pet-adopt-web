@@ -6,7 +6,7 @@ import { getTokenFromCookie } from "@/services/get-token-from-cookie";
 
 async function getPet(id: string): Promise<PetProps | null> {
   const token = await getTokenFromCookie();
-  const api = await createApi(token);
+  const api = createApi(token);
 
   try {
     const response = await api.get(`/api/pets/${id}`);

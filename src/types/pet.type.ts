@@ -1,3 +1,5 @@
+import { UserProps } from "./user.type"
+
 export interface PetProps {
   id: number
   user_id: number
@@ -8,4 +10,5 @@ export interface PetProps {
   color: string
   images: string[]
   available: boolean
+  owner: UserProps
 }

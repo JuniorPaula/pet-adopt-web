@@ -1,14 +1,72 @@
 "use client";
 
+import Image from "next/image"
+import Cookies from "js-cookie";
 import { PetProps } from "@/types/pet.type"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react";
-import Image from "next/image"
-import { FaSquare } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { createApi } from "@/services/axios-service";
+import { toast } from "react-toastify";
 
 
 export function PetDetails(pet: PetProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [ visitScheduled, setVisitScheduled ] = useState<boolean>(false)
+
+  const handleScheduleVisit = async () => {
+    const token = Cookies.get("authToken")
+    if (!token) {
+      toast.error("Ops! Você precisa estar logado para agendar uma visita.")
+      return
+    }
+
+    if (!pet.id) {
+      toast.error("Ops! Ocorreu um erro ao agendar a visita.")
+      return
+    }
+
+    const api = createApi(token)
+    try {
+      const response = await api.post(`/api/pets/${pet.id}/scheduler`, {
+        owner_id: pet.owner.id,
+      })
+
+      if (response.data.error) {
+        toast.error(response.data.message)
+        return
+      }
+
+      toast.success("Visita agendada com sucesso!")
+      setVisitScheduled(true)
+    }
+    catch (error: any) {
+      console.error(error.response)
+      toast.error("Ops! Ocorreu um erro ao agendar a visita.")
+    }
+  }
+
+  useEffect(() => {
+    const getVisitSchedule = async () => {
+      const token = Cookies.get("authToken")
+      if (!token) {
+        return
+      }
+
+      const api = createApi(token)
+      try {
+        await api.get(`/api/pets/${pet.id}/scheduler`)
+        setVisitScheduled(false)
+      }
+      catch (error: any) {
+        console.error("ERRO::", error.response)
+        if (error.response.data.error) {
+          setVisitScheduled(true)
+        }
+      }
+    }
+
+    getVisitSchedule()
+  }, [pet])
 
   return (
     <section>
@@ -47,7 +105,15 @@ export function PetDetails(pet: PetProps) {
           <p className="text-gray-700 mb-2"><strong>Nome:</strong> James foo</p>
           <p className="text-gray-700 mb-2"><strong>Telefone:</strong> +55 47 991678787</p>
 
-          <button className="w-full mb-4 mt-2 bg-blue-500 hover:bg-blue-600 text-white p-2">Agendar uma visita</button>
+          <button 
+            className={`w-full mb-4 mt-2 text-white p-2 ${
+              visitScheduled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+            }`}
+            onClick={ handleScheduleVisit }
+            disabled={ visitScheduled }
+          >
+            { visitScheduled ? "Visita agendada" : "Agendar uma visita" }
+          </button>
         </div>
 
         {/* Lado Direito - Descrição */}

@@ -21,7 +21,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const api = await createApi();
+      const api = createApi();
       await api.post("/api/register", data);
 
       toast.success("Registro realizado com sucesso!");
