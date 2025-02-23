@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { createApi } from "./axios-service";
+import { getTokenFromCookie } from "./get-token-from-cookie";
 
 type Credential = {
   email: string
@@ -7,7 +8,9 @@ type Credential = {
 }
 
 export const loginUser = async (credentials: Credential) => {
-  const api = await createApi();
+  const c_token = await getTokenFromCookie()
+  const api = await createApi(c_token);
+
   const response = await api.post(`/api/login`, credentials);
   const { token, user } = response.data.data;
 

@@ -16,9 +16,11 @@ export function Header() {
           </Link>
         </nav>
 
-        <div>
-          Ola, <span className="font-semibold text-gray-800">{ user?.first_name ?? "" }</span>
-        </div>
+        { user && (
+          <div>
+            Ola, <span className="font-semibold text-gray-800">{ user?.first_name ?? "" }</span>
+          </div>
+        )}
 
         <div className="flex items-center justify-center space-x-4">
           <Link href="/pets" className="text-lg hover:text-blue-700 duration-200">

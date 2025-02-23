@@ -2,9 +2,11 @@ import { createApi } from "@/services/axios-service";
 import { Container } from "@/components/container";
 import { PetProps } from "@/types/pet.type";
 import { PetDetails } from "../components/pet-details";
+import { getTokenFromCookie } from "@/services/get-token-from-cookie";
 
 async function getPet(id: string): Promise<PetProps | null> {
-  const api = await createApi();
+  const token = await getTokenFromCookie();
+  const api = await createApi(token);
 
   try {
     const response = await api.get(`/api/pets/${id}`);

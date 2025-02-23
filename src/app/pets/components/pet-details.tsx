@@ -4,6 +4,7 @@ import { PetProps } from "@/types/pet.type"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react";
 import Image from "next/image"
+import { FaSquare } from "react-icons/fa6";
 
 
 export function PetDetails(pet: PetProps) {
@@ -82,9 +83,9 @@ export function PetDetails(pet: PetProps) {
               />
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-2 right-2 bg-red-500 hover:bg-red-600"
+                className="absolute top-2 right-2 font-bold text-red-500 bg-transparent"
               >
-                Fechar
+                X
               </button>
             </motion.div>
           </motion.div>

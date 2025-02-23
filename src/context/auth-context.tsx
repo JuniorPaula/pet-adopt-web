@@ -26,6 +26,16 @@ export const AuthProvider = ({ children }: { children: ReactNode}) => {
   const [token, setToken] = useState<string | null>(null)
   const router = useRouter();
 
+  // Check if token exists
+  const checkToken = () => {
+    const currentToken = Cookies.get("authToken")
+    if (!currentToken) {
+      console.info("Token not found, cleaning user data")
+      logout()
+    }
+  }
+
+  // Check token on every render
   useEffect(() => {
     const savedToken = Cookies.get("authToken")
     const savedUser = localStorage.getItem("user")
@@ -37,6 +47,30 @@ export const AuthProvider = ({ children }: { children: ReactNode}) => {
     // if user exist in local storage, set hook
     if (savedUser) {
       setUser(JSON.parse(savedUser))
+    }
+  }, [])
+
+  // verify token on window focus event
+  useEffect(() => {
+    window.addEventListener("focus", checkToken)
+
+    return () => {
+      window.removeEventListener("focus", checkToken)
+    }
+  }, [])
+
+  // verify token on storage change event
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "authToken") {
+        checkToken()
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
     }
   }, [])
 
