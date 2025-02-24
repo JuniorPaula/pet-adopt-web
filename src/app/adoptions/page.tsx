@@ -18,7 +18,7 @@ const adoptios = [
   },
 ]
 
-export default function Adoptions() {
+export default function AdoptionsPage() {
   return (
     <Container>
       <div className="max-w-screen-xl mx-auto py-6">
