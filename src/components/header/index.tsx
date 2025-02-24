@@ -33,6 +33,10 @@ export function Header() {
                 Meu perfil
               </Link>
 
+              <Link href="/adoptions" className="text-lg hover:text-blue-700 duration-200">
+                Minhas adoções
+              </Link>
+
               <button onClick={logout} className="text-xl text-red-500">
                 <FaSignOutAlt />
               </button>
