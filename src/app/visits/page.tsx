@@ -1,31 +1,8 @@
 import { Container } from "@/components/container";
-
-const visits = [
-  {
-    pet: "Bob",
-    onwe_pet: "João",
-    visit_date: "2021-10-10",
-    status: "completed"
-  },
-  {
-    pet: "Bob",
-    onwe_pet: "João",
-    visit_date: "2021-10-10",
-    status: "pending"
-  },
-  {
-    pet: "Bob",
-    onwe_pet: "João",
-    visit_date: "2021-10-10",
-    status: "pending"
-  },
-  {
-    pet: "Bob",
-    onwe_pet: "João",
-    visit_date: "2021-10-10",
-    status: "canceled"
-  },
-]
+import { createApi } from "@/services/axios-service";
+import { getTokenFromCookie } from "@/services/get-token-from-cookie";
+import { VisitProps } from "@/types/visit.type";
+import Link from "next/link";
 
 enum VisitStatus {
   Completed = "completed",
@@ -33,7 +10,27 @@ enum VisitStatus {
   Canceled = "canceled"
 }
 
-export default function VisitsPage() {
+async function getVisits(): Promise<VisitProps[] | null> {
+  const token = await getTokenFromCookie();
+  const api = createApi(token);
+  
+  try {
+    const response = await api.get(`/api/visits`);
+    return response.data.data;
+
+  } catch (error: any) {
+    console.error(error.response?.data);
+    return null;
+  }
+}
+
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
+}
+
+export default async function VisitsPage() {
+  const visits = await getVisits();
+
   return (
     <Container>
       <div className="max-w-screen-xl mx-auto py-6">
@@ -42,28 +39,32 @@ export default function VisitsPage() {
       </div>
 
       <div>
-        { visits.length === 0 && (
+        { visits && visits.length === 0 && (
           <div className="max-w-screen-xl mx-auto py-6">
             <p className="text-gray-600">Você ainda não agendou nenhuma visita.</p>
           </div>
         )}
 
-        { visits.length > 0 && (
+        { visits && visits.length > 0 && (
           <table className="table-auto border-separate border border-gray-400 w-full">
             <thead>
               <tr>
-                <th className="border border-gray-300 px-4 py-2">Pet</th>
-                <th className="border border-gray-300 px-4 py-2">Tutor</th>
-                <th className="border border-gray-300 px-4 py-2">Data da visita</th>
-                <th className="border border-gray-300 px-4 py-2">Status</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Pet</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Tutor</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Data da visita</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Status</th>
               </tr>
             </thead>
             <tbody>
               { visits.map((visit, index) => (
                 <tr key={index}>
-                  <td className="border border-gray-300 px-4 py-2">{visit.pet}</td>
-                  <td className="border border-gray-300 px-4 py-2">{visit.onwe_pet}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{visit.visit_date}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-blue-500">
+                    <Link href={`/pets/${visit.pet.id}`}>
+                        {visit.pet.name}
+                    </Link>
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">{visit.pet.owner.first_name}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{formatDate(visit.date)}</td>
                   <td className={`border border-gray-300 px-4 py-2 text-center ${
                     visit.status === VisitStatus.Completed ? 'text-green-500' :
                     visit.status === VisitStatus.Pending ? 'text-yellow-500' :
