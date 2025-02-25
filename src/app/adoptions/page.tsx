@@ -1,39 +1,40 @@
 import { Container } from "@/components/container";
+import { createApi } from "@/services/axios-service";
+import { getTokenFromCookie } from "@/services/get-token-from-cookie";
 
-const adoptios = [
-  {
-    pet: "Cachorro 1",
-    old_owner: "João",
-    adopt_date: "2021-10-10",
-  },
-  {
-    pet: "Cachorro 2",
-    old_owner: "Maria",
-    adopt_date: "2021-10-10",
-  },
-  {
-    pet: "Cachorro 3",
-    old_owner: "José",
-    adopt_date: "2021-10-10",
-  },
-]
+async function getAdoptions() {
+  const token = await getTokenFromCookie();
+    const api = createApi(token);
+  
+  try {
+    const response = await api.get(`/api/adopts`);
+    console.log(response.data.data);
+    return response.data.data;
+  }
+  catch (error: any) {
+    console.error(error.response?.data);
+    return null;
+  }
+}
 
-export default function AdoptionsPage() {
+export default async function AdoptionsPage() {
+  const adopts = await getAdoptions();
+
   return (
     <Container>
       <div className="max-w-screen-xl mx-auto py-6">
         <h1 className="text-2xl font-medium text-neutral-700">Minhas adoções</h1>
-        <p className="text-gray-600 mt-2">Aqui você pode ver os pets que você adotou e seus status de adoção.</p>
+        <p className="text-gray-600 mt-2">Aqui você pode ver os pets que você adotou.</p>
       </div>
 
       <div>
-        { adoptios.length === 0 && (
+        { adopts.length === 0 && (
           <div className="max-w-screen-xl mx-auto py-6">
             <p className="text-gray-600">Você ainda não adotou nenhum pet.</p>
           </div>
         )}
 
-        { adoptios.length > 0 && (
+        { adopts.length > 0 && (
           <table className="table-auto border-separate border border-gray-400 w-full">
             <thead>
               <tr>
@@ -43,11 +44,11 @@ export default function AdoptionsPage() {
               </tr>
             </thead>
             <tbody>
-              { adoptios.map((adoption, index) => (
+              { adopts.map((adopt: any, index: number) => (
                 <tr key={index}>
-                  <td className="border border-gray-300 px-4 py-2">{adoption.pet}</td>
-                  <td className="border border-gray-300 px-4 py-2">{adoption.old_owner}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{adoption.adopt_date}</td>
+                  <td className="border border-gray-300 px-4 py-2">{adopt.pet}</td>
+                  <td className="border border-gray-300 px-4 py-2">{adopt.old_owner}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{adopt.adopt_date}</td>
                 </tr>
               ))}
             </tbody>
