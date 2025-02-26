@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { AuthProvider } from "@/context/auth-context";
 import { ToastContainer } from "react-toastify";
+import { Footer } from "@/components/footer";
 
 const montserrat = Montserrat({
   variable: "--montserrat",
@@ -29,6 +30,7 @@ export default function RootLayout({
           <ToastContainer />
           <Header />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>
