@@ -41,6 +41,10 @@ export function Header() {
                 Visitas agendadas
               </Link>
 
+              <Link href="/visits/confirm" className="text-lg hover:text-blue-700 duration-200">
+                visitas à confirmar
+              </Link>
+
               <button onClick={logout} className="text-xl text-red-500">
                 <FaSignOutAlt />
               </button>
