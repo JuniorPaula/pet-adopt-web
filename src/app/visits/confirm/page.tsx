@@ -1,6 +1,26 @@
 import { Container } from "@/components/container";
+import { CardDetals } from "../components/card-details";
+import { getTokenFromCookie } from "@/services/get-token-from-cookie";
+import { createApi } from "@/services/axios-service";
+import { VisitProps } from "@/types/visit.type";
 
-export default function ConfirmVisitPage() {
+async function getVisits() {
+  const token = await getTokenFromCookie();
+  const api = createApi(token);
+  
+  try {
+    const response = await api.get(`/api/visits/owner`);
+    return response.data.data;
+
+  } catch (error: any) {
+    console.error(error.response?.data);
+    return null;
+  }
+}
+
+export default async function ConfirmVisitPage() {
+  const visits: VisitProps[] = await getVisits();
+
   return (
     <Container>
       <div className="max-w-screen-xl mx-auto py-6">
@@ -10,36 +30,23 @@ export default function ConfirmVisitPage() {
         </p>
         <p className="text-gray-600">
           Você pode confirmar ou cancelar a visita, ou até melhor,
-          entra em contato com quem tem enteresse em fazer mais um cãozinho feliz.
+          entra em contato com quem tem interesse em fazer mais um cãozinho feliz.
         </p>
       </div>
 
+    { visits && visits.length === 0 && (
       <div className="max-w-screen-xl mx-auto py-6">
-        <div className="bg-slate-100 shadow-md p-6">
-          <h2 className="text-xl font-medium text-neutral-700">Detalhes da visita</h2>
-          <p className="text-gray-600 mt-2">Confirme os detalhes da visita abaixo:</p>
-
-          <div className="mt-4">
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-medium text-neutral-700">Pet</span>
-              <span className="text-lg text-blue-500">Rex</span>
-            </div>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-lg font-medium text-neutral-700">Enteressado</span>
-              <span className="text-lg">João da Silva</span>
-            </div>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-lg font-medium text-neutral-700">Celular</span>
-              <span className="text-lg">55 47 993454323</span>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <button className="bg-green-500 text-white py-2 px-4 rounded-sm hover:bg-green-600 transition-colors">Confirmar visita</button>
-            <button className="bg-red-500 text-white py-2 px-4 rounded-sm ml-2 hover:bg-red-600 transition-colors">Cancelar visita</button>
-          </div>
-        </div>
+        <p className="text-gray-600">Não há visitas para confirmar.</p>
       </div>
+    )}
+
+    { visits && visits.length > 0 && (
+      <div className="max-w-screen-xl mx-auto py-6">
+          {visits.map((visit, index) => (
+            <CardDetals key={index} {...visit} />
+          ))}
+      </div>
+    )}
     </Container>
   );
 }

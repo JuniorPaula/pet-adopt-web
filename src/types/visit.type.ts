@@ -1,4 +1,5 @@
 import { PetProps } from "./pet.type"
+import { UserProps } from "./user.type"
 
 export interface VisitProps {
   id: number
@@ -6,4 +7,5 @@ export interface VisitProps {
   date: string
   status: string
   pet: PetProps
+  user: UserProps
 }
