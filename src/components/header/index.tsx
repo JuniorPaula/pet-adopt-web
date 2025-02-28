@@ -8,7 +8,7 @@ export function Header() {
   const { user, logout } = useAuth();
 
   return (
-    <header className="w-full h-20 bg-slate-100 text-black px-2 shadow-md">
+    <header className="w-full h-20 bg-slate-100 text-black px-2 shadow-md sm:px-6 lg:px-8">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between h-20 sm:justify-between">
         <nav className="flex items-center justify-center">
           <Link href="/" className="text-2xl font-bold">

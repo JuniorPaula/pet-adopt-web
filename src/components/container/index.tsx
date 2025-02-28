@@ -1,6 +1,6 @@
 export function Container({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="max-w-screen-xl mx-auto py-4 pb-36" style={{ minHeight: 'calc(100vh - 80px)' }}>
+    <div className="max-w-screen-xl mx-auto py-4 pb-36 px-4 sm:px-6 lg:px-8" style={{ minHeight: 'calc(100vh - 80px)' }}>
       { children }
     </div>
   )
