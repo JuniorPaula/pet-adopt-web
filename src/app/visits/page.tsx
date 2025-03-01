@@ -24,10 +24,6 @@ async function getVisits(): Promise<VisitProps[] | null> {
   }
 }
 
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
-}
-
 export default async function VisitsPage() {
   const visits = await getVisits();
 
@@ -51,7 +47,7 @@ export default async function VisitsPage() {
               <tr>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Pet</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Tutor</th>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Data da visita</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Telefone do tutor</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Status</th>
               </tr>
             </thead>
@@ -64,14 +60,14 @@ export default async function VisitsPage() {
                     </Link>
                   </td>
                   <td className="border border-gray-300 px-4 py-2">{visit.pet.owner.first_name}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{formatDate(visit.date)}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">4799999999999</td>
                   <td className={`border border-gray-300 px-4 py-2 text-center ${
                     visit.status === VisitStatus.Completed ? 'text-green-500' :
                     visit.status === VisitStatus.Pending ? 'text-yellow-500' :
                     visit.status === VisitStatus.Canceled ? 'text-red-500' : ''
                   }`}>
                     {
-                      visit.status === VisitStatus.Completed ? 'Concluída' :
+                      visit.status === VisitStatus.Completed ? 'Adoção Concluída' :
                       visit.status === VisitStatus.Pending ? 'Aguardando confirmação' :
                       visit.status === VisitStatus.Canceled ? 'Cancelada' : ''
                     }
