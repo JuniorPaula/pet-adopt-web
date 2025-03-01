@@ -18,25 +18,25 @@ async function getVisits() {
   }
 }
 
-export default async function ConfirmVisitPage() {
+export default async function ConfirmAdoptPage() {
   const visits: VisitProps[] = await getVisits();
 
   return (
     <Container>
       <div className="max-w-screen-xl mx-auto py-6">
-        <h1 className="text-2xl font-medium text-neutral-700">Confirmação de visita</h1>
+        <h1 className="text-2xl font-medium text-neutral-700">Confirmação de Adoção</h1>
         <p className="text-gray-600 mt-2">
-          Aqui você pode conferir quem está solicitando uma visita para conhecer o Pet que está para Adoção
+          Aqui você pode conferir quem solicitou uma visita e pretende conhecer melhor o Pet para uma futura Adoção.
         </p>
         <p className="text-gray-600">
-          Você pode confirmar ou cancelar a visita, ou até melhor,
-          entra em contato com quem tem interesse em fazer mais um cãozinho feliz.
+          Caso ocorra tudo certo, você pode confirmar ou cancelar a adoção, ou até melhor,<br />
+          antes disso você pode entra em contato com quem tem interesse em fazer mais um cãozinho feliz.
         </p>
       </div>
 
     { visits && visits.length === 0 && (
       <div className="max-w-screen-xl mx-auto py-6">
-        <p className="text-gray-600">Não há visitas para confirmar.</p>
+        <p className="text-gray-600">Não há adoção para confirmar.</p>
       </div>
     )}
 

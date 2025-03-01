@@ -37,12 +37,12 @@ export function Header() {
                 Minhas adoções
               </Link>
 
-              <Link href="/visits" className="text-lg hover:text-blue-700 duration-200">
-                Visitas agendadas
+              <Link href="/adoptions/confirm" className="text-lg hover:text-blue-700 duration-200">
+                confirmar adoção
               </Link>
 
-              <Link href="/visits/confirm" className="text-lg hover:text-blue-700 duration-200">
-                visitas à confirmar
+              <Link href="/visits" className="text-lg hover:text-blue-700 duration-200">
+                Visitas agendadas
               </Link>
 
               <button onClick={logout} className="text-xl text-red-500">
