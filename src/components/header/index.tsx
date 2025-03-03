@@ -27,14 +27,14 @@ export function Header() {
                 Minhas adoções
               </Link>
 
-              <div className="">
+              <div className="sm:p-0">
                 <Menu as="div" className="relative z-10">
                     <MenuButton
                     className="inline-flex items-center gap-2 rounded-sm py-1.5 px-3 text-sm/6 font-semibold text-gray-800 shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-blue-400 data-[open]:bg-blue-300 data-[focus]:outline-1 data-[focus]:outline-white"
                     >
                     { user?.first_name ?? Menu }
                   </MenuButton>
-                  <MenuItems className="absolute mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems anchor="bottom end" className="absolute mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-2">
                       <MenuItem>
                           <Link

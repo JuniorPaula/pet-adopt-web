@@ -34,12 +34,13 @@ export default async function VisitsPage() {
         <p className="text-gray-600 mt-2">Aqui você pode acompanhar as visitas que você agendou.</p>
       </div>
 
-      <div>
+      <div className="max-w-screen-xl mx-auto py-6">
         { visits && visits.length === 0 && (
-          <div className="max-w-screen-xl mx-auto py-6">
-            <p className="text-gray-600">Você ainda não agendou nenhuma visita.</p>
-          </div>
+          <p className="text-gray-600">Você ainda não agendou nenhuma visita.</p>
         )}
+      </div>
+
+      <section className="overflow-x-auto">
 
         { visits && visits.length > 0 && (
           <table className="table-auto border-separate border border-gray-400 w-full">
@@ -77,7 +78,7 @@ export default async function VisitsPage() {
             </tbody>
           </table>
         )}
-      </div>
+      </section>
     </Container>
   );
 }

@@ -32,12 +32,13 @@ export default async function AdoptionsPage() {
         <p className="text-gray-600 mt-2">Aqui você pode ver os pets que você adotou.</p>
       </div>
 
-      <div>
+      <div className="max-w-screen-xl mx-auto py-6">
         { adopts.length === 0 && (
-          <div className="max-w-screen-xl mx-auto py-6">
-            <p className="text-gray-600">Você ainda não adotou nenhum pet.</p>
-          </div>
+          <p className="text-gray-600">Você ainda não adotou nenhum pet.</p>
         )}
+      </div>
+
+      <section className="overflow-x-auto">
 
         { adopts.length > 0 && (
           <table className="table-auto border-separate border border-gray-400 w-full">
@@ -55,18 +56,18 @@ export default async function AdoptionsPage() {
                   <td className="border border-gray-300 px-4 py-2">{adopt.pet.name}</td>
                   <td className="border border-gray-300 px-4 py-2">{adopt.old_owner.first_name} {adopt.old_owner?.last_name ?? ''}</td>
                   <td className="border border-gray-300 px-4 py-2 text-center">{convertDate(adopt.adopt_date)}</td>
-                  <td className="border border-gray-300 px-4 py-2 flex justify-center">
+                    <td className="border border-gray-300 px-4 py-2 sm:flex sm:justify-center">
                     <Link href={`/adoptions/pet/${adopt.pet.id}`}>
                       <FaEye className="text-blue-700 cursor-pointer" size={24} />
                     </Link>
-                  </td>
+                    </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
 
-      </div>
+      </section>
     </Container>
   );
 }

@@ -9,7 +9,7 @@ import { PetProps } from "@/types/pet.type";
 async function getMyPets() {
   const token = await getTokenFromCookie();
   const api = createApi(token);
-  
+
   try {
     const response = await api.get(`api/pets/me`);
     return response.data.data;
@@ -22,7 +22,6 @@ async function getMyPets() {
 
 export default async function MyPetsPage() {
   const data: PetProps[] = await getMyPets();
-  console.log(data)
 
   return (
     <Container>
@@ -31,78 +30,81 @@ export default async function MyPetsPage() {
         <p className="text-gray-600 mt-2">Aqui você pode ver os pets que você cadastrou. Gerênciar e atualizar as informações deles.</p>
       </div>
 
-      { data && data.length === 0 && (
-        <div className="max-w-screen-xl mx-auto py-6">
+      <div className="max-w-screen-xl mx-auto py-6">
+        {data && data.length === 0 && (
           <p className="text-gray-600">Você ainda não cadastrou nenhum pet.</p>
-        </div>
-      )}
+        )}
+      </div>
 
-      { data && data.length > 0 && (
-        <table className="table-auto border-separate border border-gray-400 w-full">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">#</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Nome</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Idade</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Peso</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Porte</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Cor</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Disponível</th>
-              <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            { data.map((pet, index) => (
+      <section className="overflow-x-auto">
+
+        {data && data.length > 0 && (
+          <table className="table-none sm:tab</div>le-auto border-separate border border-gray-400 w-full">
+            <thead>
               <tr>
-                <td className="border border-gray-300 px-4 py-2 flex justify-center">
-                  <Image
-                    src={ pet?.images?.[0] ? `${process.env.NEXT_PUBLIC_API_URL}${pet.images[0]}` : `/assets/no-image.png`}
-                    alt="Foto de Rex"
-                    width={65}
-                    height={65}
-                    className="rounded-full object-cover"
-                  />
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  { pet.available ? (
-                    <Link href={`/pets/me/${pet.id}/edit`} className="text-blue-500">
-                      { pet.name }
-                    </Link>
-
-                  ): (
-                    <span className="text-gray-800">{ pet.name }</span>
-                  )}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">{ pet.age } ano(s)</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{ pet.weight } Kg</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{ pet.size }</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{ pet.color }</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  { pet.available ? (
-                    <span className="bg-green-500 p-1 rounded-md text-sm text-white">Disponível</span>
-                  ) : (
-                    <span className="bg-gray-400 p-1 rounded-md text-sm text-white">Adotado</span>
-                  )}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <div className="flex justify-center">
-                    { pet.available ? (
-                      <>
-                        <Link href={`/pets/me/${pet.id}/edit`}>
-                          <FaEdit className="text-blue-500 cursor-pointer" size={20} />
-                        </Link>
-                        <FaTrash className="text-red-500 cursor-pointer ml-2" size={20} />
-                      </>
-                    ) : (
-                      <span>-</span>
-                    )}
-                  </div>
-                </td>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">#</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Nome</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Idade</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Peso</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Porte</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Cor</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Disponível</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {data.map((pet, index) => (
+                <tr key={index}>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <Image
+                      src={pet?.images?.[0] ? `${process.env.NEXT_PUBLIC_API_URL}${pet.images[0]}` : `/assets/no-image.png`}
+                      alt={`Foto do pet, nome: ${pet.name}`}
+                      width={50}
+                      height={50}
+                      className="rounded-full object-cover"
+                    />
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {pet.available ? (
+                      <Link href={`/pets/me/${pet.id}/edit`} className="text-blue-500">
+                        {pet.name}
+                      </Link>
+
+                    ) : (
+                      <span className="text-gray-800">{pet.name}</span>
+                    )}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">{pet.age} ano(s)</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{pet.weight} Kg</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{pet.size}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{pet.color}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">
+                    {pet.available ? (
+                      <span className="bg-green-500 p-1 rounded-md text-sm text-white">Disponível</span>
+                    ) : (
+                      <span className="bg-gray-400 p-1 rounded-md text-sm text-white">Adotado</span>
+                    )}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">
+                    <div className="flex justify-center">
+                      {pet.available ? (
+                        <>
+                          <Link href={`/pets/me/${pet.id}/edit`}>
+                            <FaEdit className="text-blue-500 cursor-pointer" size={20} />
+                          </Link>
+                          <FaTrash className="text-red-500 cursor-pointer ml-2" size={20} />
+                        </>
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
     </Container>
   )
 }
