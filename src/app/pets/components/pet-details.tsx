@@ -58,16 +58,16 @@ export function PetDetails(pet: PetProps) {
       try {
         const response = await api.get(`/api/pets/${pet.id}/scheduler`)
         if (!response.data.error) {
-          if (response.data.data.status === "pending") {
+          if (response?.data?.data?.status === "pending") {
             setVisitScheduled(true)
-          } else if (response.data.data.status === "completed") {
+          } else if (response?.data?.data?.status === "completed") {
             // redirect to adopt page
             router.push(`/adoptions/pet/${pet.id}`)
           }
         }
       }
       catch (error: any) {
-        console.error("ERRO::", error.response)
+        console.error("ERRO::", error)
         toast.error("Ops! Ocorreu um erro ao buscar a agenda de visitas.")
       }
     }
