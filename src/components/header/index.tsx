@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/auth-context";
+import { Menu, MenuButton, MenuItem, MenuItems, MenuSeparator } from "@headlessui/react";
 import Link from "next/link";
-import { FaSignOutAlt } from "react-icons/fa";
 
 export function Header() {
   const { user, logout } = useAuth();
@@ -16,46 +16,80 @@ export function Header() {
           </Link>
         </nav>
 
-        { user && (
-          <div>
-            Ola, <span className="font-semibold text-gray-800">{ user?.first_name ?? "" }</span>
-          </div>
-        )}
-
         <div className="flex items-center justify-center space-x-4">
-          <Link href="/pets" className="text-lg hover:text-blue-700 duration-200">
+          <Link href="/pets" className="rounded-sm py-1.5 px-3 text-sm/6 hover:bg-blue-400 duration-200">
             Pets
           </Link>
 
-          { user ? (
+          {user ? (
             <>
-              <Link href="/perfil" className="text-lg hover:text-blue-700 duration-200">
-                Meu perfil
-              </Link>
-
-              <Link href="/adoptions" className="text-lg hover:text-blue-700 duration-200">
+              <Link href="/adoptions" className="rounded-sm py-1.5 px-3 text-sm/6 hover:bg-blue-400 duration-200">
                 Minhas adoções
               </Link>
 
-              <Link href="/adoptions/confirm" className="text-lg hover:text-blue-700 duration-200">
-                confirmar adoção
-              </Link>
+              <div className="">
+                <Menu as="div" className="relative z-10">
+                    <MenuButton
+                    className="inline-flex items-center gap-2 rounded-sm py-1.5 px-3 text-sm/6 font-semibold text-gray-800 shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-blue-400 data-[open]:bg-blue-300 data-[focus]:outline-1 data-[focus]:outline-white"
+                    >
+                    { user?.first_name ?? Menu }
+                  </MenuButton>
+                  <MenuItems className="absolute mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="py-2">
+                      <MenuItem>
+                          <Link
+                            href="/perfil"
+                            className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
+                          >
+                            Meu perfil
+                          </Link>
+                      </MenuItem>
+                      <MenuItem>
+                          <Link
+                            href="/adoptions"
+                            className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
+                          >
+                            Minhas adoções
+                          </Link>
+                      </MenuItem>
+                      <MenuItem>
+                          <Link
+                            href="/adoptions/confirm"
+                            className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
+                          >
+                            Confirmar adoção
+                          </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          href="/visits"
+                          className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
+                        >
+                          Visitas agendadas
+                        </Link>
+                      </MenuItem>
+                      <MenuSeparator className="my-1 h-px bg-gray-800" />
+                      <MenuItem>
+                          <button
+                            onClick={logout}
+                            className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-300 transition-colors duration-200"
+                          >
+                            Sair
+                          </button>
+                      </MenuItem>
+                    </div>
+                  </MenuItems>
+                </Menu>
+              </div>
 
-              <Link href="/visits" className="text-lg hover:text-blue-700 duration-200">
-                Visitas agendadas
-              </Link>
-
-              <button onClick={logout} className="text-xl text-red-500">
-                <FaSignOutAlt />
-              </button>
             </>
 
-          ): (
+          ) : (
             <>
-              <Link href="/login" className="text-lg font-semibold hover:text-blue-900 duration-200">
+              <Link href="/login" className="rounded-sm py-1.5 px-3 text-sm/6 hover:bg-blue-400 duration-200">
                 Login
               </Link>
-              <Link href="/register" className="text-lg font-semibold hover:text-blue-700 duration-200">
+              <Link href="/register" className="rounded-sm py-1.5 px-3 text-sm/6 hover:bg-blue-400 duration-200">
                 Registrar
               </Link>
             </>
