@@ -17,6 +17,10 @@ async function getAdoptions() {
   }
 }
 
+function convertDate(date: Date): string {
+  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
+}
+
 export default async function AdoptionsPage() {
   const adopts = await getAdoptions();
 
@@ -46,9 +50,9 @@ export default async function AdoptionsPage() {
             <tbody>
               { adopts.map((adopt: any, index: number) => (
                 <tr key={index}>
-                  <td className="border border-gray-300 px-4 py-2">{adopt.pet}</td>
-                  <td className="border border-gray-300 px-4 py-2">{adopt.old_owner}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{adopt.adopt_date}</td>
+                  <td className="border border-gray-300 px-4 py-2">{adopt.pet.name}</td>
+                  <td className="border border-gray-300 px-4 py-2">{adopt.old_owner.first_name} {adopt.old_owner?.last_name ?? ''}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{convertDate(adopt.adopt_date)}</td>
                 </tr>
               ))}
             </tbody>
