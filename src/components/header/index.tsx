@@ -44,6 +44,18 @@ export function Header() {
                             Meu perfil
                           </Link>
                       </MenuItem>
+                      <MenuSeparator className="my-1 h-px bg-gray-300" />
+
+                      <MenuItem>
+                          <Link
+                            href="/pets/me"
+                            className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
+                          >
+                            Meus pets
+                          </Link>
+                      </MenuItem>
+                      <MenuSeparator className="my-1 h-px bg-gray-300" />
+
                       <MenuItem>
                           <Link
                             href="/adoptions"
@@ -52,6 +64,7 @@ export function Header() {
                             Minhas adoções
                           </Link>
                       </MenuItem>
+
                       <MenuItem>
                           <Link
                             href="/adoptions/confirm"
@@ -60,6 +73,7 @@ export function Header() {
                             Confirmar adoção
                           </Link>
                       </MenuItem>
+
                       <MenuItem>
                         <Link
                           href="/visits"
@@ -68,7 +82,8 @@ export function Header() {
                           Visitas agendadas
                         </Link>
                       </MenuItem>
-                      <MenuSeparator className="my-1 h-px bg-gray-800" />
+                      <MenuSeparator className="my-1 h-px bg-gray-300" />
+
                       <MenuItem>
                           <button
                             onClick={logout}
