@@ -7,11 +7,13 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react";
 import { createApi } from "@/services/axios-service";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 export function PetDetails(pet: PetProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [ visitScheduled, setVisitScheduled ] = useState<boolean>(false)
+  const router = useRouter();
 
   const handleScheduleVisit = async () => {
     const token = Cookies.get("authToken")
@@ -54,14 +56,19 @@ export function PetDetails(pet: PetProps) {
 
       const api = createApi(token)
       try {
-        await api.get(`/api/pets/${pet.id}/scheduler`)
-        setVisitScheduled(false)
+        const response = await api.get(`/api/pets/${pet.id}/scheduler`)
+        if (!response.data.error) {
+          if (response.data.data.status === "pending") {
+            setVisitScheduled(true)
+          } else if (response.data.data.status === "completed") {
+            // redirect to adopt page
+            router.push(`/adoptions/pet/${pet.id}`)
+          }
+        }
       }
       catch (error: any) {
         console.error("ERRO::", error.response)
-        if (error.response.data.error) {
-          setVisitScheduled(true)
-        }
+        toast.error("Ops! Ocorreu um erro ao buscar a agenda de visitas.")
       }
     }
 
