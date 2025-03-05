@@ -68,6 +68,7 @@ export default async function MyPetsPage() {
                       width={50}
                       height={50}
                       className="rounded-full object-cover"
+                      style={{ width: "50px", height: "50px" }}
                     />
                   </td>
                   <td className="border border-gray-300 px-4 py-2">

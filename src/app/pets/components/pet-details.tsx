@@ -77,8 +77,8 @@ export function PetDetails(pet: PetProps) {
 
   return (
     <section>
-      <div className="max-w-2xl w-full">
-        <div className="grid grid-cols-2 gap-2">
+      <div className="w-full">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {pet?.images?.map((img, index) => (
             <motion.div
               key={index}
@@ -87,11 +87,11 @@ export function PetDetails(pet: PetProps) {
               onClick={() => setSelectedImage(img)}
             >
               <Image
-                src={`${process.env.NEXT_PUBLIC_API_URL}${img}`}
-                alt={`Foto de ${pet.name}`}
-                width={300}
-                height={200}
-                className="w-full h-40 object-cover"
+          src={`${process.env.NEXT_PUBLIC_API_URL}${img}`}
+          alt={`Foto de ${pet.name}`}
+          width={300}
+          height={200}
+          className="w-full h-40 object-cover"
               />
             </motion.div>
           ))}
