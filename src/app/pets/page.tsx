@@ -45,8 +45,8 @@ export default async function PetsPage() {
 
               <div className="flex flex-col mt-4 items-start justify-center">
                 <h2 className="text-lg text-neutral-700 font-bold mt-4">{pet.name}</h2>
-                <p className="text-gray-600 text-sm">Idade: {pet.age} ano(s)</p>
-                <p className="text-gray-600 text-sm">Peso: {pet.weight} Kg</p>
+                <p className="text-gray-600 text-sm">Idade: {pet.age}</p>
+                <p className="text-gray-600 text-sm">Peso: {pet.weight}</p>
                 <p className="text-gray-600 text-sm">Porte: {pet.size}</p>
                 <p className="text-gray-600 text-sm">Cor: {pet.color}</p>
 

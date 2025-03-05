@@ -81,8 +81,8 @@ export default async function MyPetsPage() {
                       <span className="text-gray-800">{pet.name}</span>
                     )}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">{pet.age} ano(s)</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{pet.weight} Kg</td>
+                  <td className="border border-gray-300 px-4 py-2">{pet.age}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">{pet.weight}</td>
                   <td className="border border-gray-300 px-4 py-2 text-center">{pet.size}</td>
                   <td className="border border-gray-300 px-4 py-2 text-center">{pet.color}</td>
                   <td className="border border-gray-300 px-4 py-2 text-center">

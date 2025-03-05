@@ -103,8 +103,8 @@ export function PetDetails(pet: PetProps) {
         <div className="pr-5">
           <h2 className="text-3xl text-slate-800 mb-4">{pet.name}</h2>
           <p className="text-gray-700 mb-2"><strong>Port:</strong> {pet.size}</p>
-          <p className="text-gray-700 mb-2"><strong>Idade:</strong> {pet.age} Anos</p>
-          <p className="text-gray-700 mb-4"><strong>Peso:</strong> {pet.weight} kg</p>
+          <p className="text-gray-700 mb-2"><strong>Idade:</strong> {pet.age}</p>
+          <p className="text-gray-700 mb-4"><strong>Peso:</strong> {pet.weight}</p>
 
           <br />
 

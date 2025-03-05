@@ -129,6 +129,7 @@ export default function CreatePet() {
               <input
                 type="text"
                 id="name"
+                placeholder="Ex: Jack"
                 {...register("name", { required: "Nome é obrigatório" })}
                 className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
                />
@@ -139,6 +140,7 @@ export default function CreatePet() {
               <input
                 type="text"
                 id="age"
+                placeholder="Ex: 2 anos, ou 1 ano e 6 meses"
                 {...register("age", { required: "Idade é obrigatório" })}
                 className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
               />
@@ -149,6 +151,7 @@ export default function CreatePet() {
               <input
                 type="text"
                 id="weight"
+                placeholder="Ex: 5kg"
                 {...register("weight", { required: "Peso é obrigatório" })}
                 className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
               />
@@ -172,6 +175,7 @@ export default function CreatePet() {
               <input
                 type="text"
                 id="color"
+                placeholder="Ex: Branco"
                 {...register("color", { required: "Cor é obrigatória" })}
                 className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
               />

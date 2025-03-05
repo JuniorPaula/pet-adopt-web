@@ -47,8 +47,8 @@ export default async function AdoptionDetailsPage({
             <div>
               <h2 className="text-lg text-neutral-700 font-bold">Detalhes do pet</h2>
               <h2 className="text-lg text-neutral-700 font-bold">{adoption.pet.name}</h2>
-              <p className="text-gray-600 text-sm">Idade: {adoption.pet.age} ano(s)</p>
-              <p className="text-gray-600 text-sm">Peso: {adoption.pet.weight} Kg</p>
+              <p className="text-gray-600 text-sm">Idade: {adoption.pet.age}</p>
+              <p className="text-gray-600 text-sm">Peso: {adoption.pet.weight}</p>
               <p className="text-gray-600 text-sm">Porte: {adoption.pet.size}</p>
               <p className="text-gray-600 text-sm">Cor: {adoption.pet.color}</p>
             </div>
