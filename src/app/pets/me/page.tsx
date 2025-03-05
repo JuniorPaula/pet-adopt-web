@@ -30,6 +30,12 @@ export default async function MyPetsPage() {
         <p className="text-gray-600 mt-2">Aqui você pode ver os pets que você cadastrou. Gerênciar e atualizar as informações deles.</p>
       </div>
 
+      <div className="max-w-screen-xl flex justify-end mx-auto">
+        <button className="bg-blue-600 py-2 px-3 text-white rounded-sm hover:bg-blue-700 transition-colors duration-200">
+          <Link href="/pets/me/new">Cadastrar novo pet</Link>
+        </button>
+      </div>
+
       <div className="max-w-screen-xl mx-auto py-6">
         {data && data.length === 0 && (
           <p className="text-gray-600">Você ainda não cadastrou nenhum pet.</p>
