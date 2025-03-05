@@ -14,12 +14,13 @@ interface CreatePetFormData {
   size: string;
   color: string;
   images: FileList;
+  description?: string;
 }
 
 export default function CreatePet() {
   const MAX_IMAGES = 12;
 
-  const { register, handleSubmit, formState: { errors } } = useForm<CreatePetFormData>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<CreatePetFormData>();
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [alertMaxImages, setAlertMaxImages] = useState(false);
@@ -63,6 +64,7 @@ export default function CreatePet() {
     formData.append("weight", data.weight);
     formData.append("size", data.size);
     formData.append("color", data.color);
+    formData.append("description", data.description || "");
 
     files.forEach((file) => {
       formData.append("images", file);
@@ -75,6 +77,7 @@ export default function CreatePet() {
 
       toast.success("Pet cadastrado com sucesso!");
 
+      reset(); // Reset form
       setPreviews([]);
       setFiles([]);
 
@@ -197,6 +200,18 @@ export default function CreatePet() {
                {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>}
               <span className="text-sm text-gray-500">O limite máximo de images é { MAX_IMAGES}. São permitidas apenas images (png, jpg e jpeg)</span>
             </div>
+          </div>
+          <div className="mt-4">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Descrição</label>
+            <textarea
+              id="description"
+              maxLength={1000}
+              placeholder="Ex: Jack é um cachorro muito brincalhão e adora crianças."
+              rows={5}
+              style={{ resize: "none" }}
+              {...register("description")}
+              className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+            ></textarea>
           </div>
           <div className="mt-4">
             <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cadastrar</button>

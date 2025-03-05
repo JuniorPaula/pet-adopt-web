@@ -10,5 +10,6 @@ export interface PetProps {
   color: string
   images: string[]
   available: boolean
+  description: string
   owner: UserProps
 }
