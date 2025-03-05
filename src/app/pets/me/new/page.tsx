@@ -1,20 +1,23 @@
 "use client";
 
-import { Container } from "@/components/container";
 import React, { useState } from "react";
+import Cookies from "js-cookie";
+import { Container } from "@/components/container";
+import { createApi } from "@/services/axios-service";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface CreatePetFormData {
   name: string;
-  age: number;
-  weight: number;
+  age: string;
+  weight: string;
   size: string;
   color: string;
   images: FileList;
 }
 
 export default function CreatePet() {
-  const MAX_IMAGES = 3;
+  const MAX_IMAGES = 12;
 
   const { register, handleSubmit, formState: { errors } } = useForm<CreatePetFormData>();
   const [files, setFiles] = useState<File[]>([]);
@@ -53,7 +56,33 @@ export default function CreatePet() {
   };
 
   const onSubmit = async (data: CreatePetFormData) => {
-    console.log(data);
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("age", data.age);
+    formData.append("weight", data.weight);
+    formData.append("size", data.size);
+    formData.append("color", data.color);
+
+    files.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    try {
+      const token = Cookies.get("authToken")
+      const api = createApi(token);
+      await api.post("/api/pets", formData);
+
+      toast.success("Pet cadastrado com sucesso!");
+
+      setPreviews([]);
+      setFiles([]);
+
+    } catch (error: any) {
+      console.error(error.response)
+
+      toast.error("Erro ao cadastrar pet. Por favor Tente novamente.");
+    }
   }
 
   return (
