@@ -29,7 +29,28 @@ export default function EditPetPage() {
     getPet(petId)
   }, [petId]);
 
-  const handleRemoveImage = (index: number) => {}
+  const handleRemoveImage = async (index: number) => {
+    const fullPath = pet?.images[index];
+    const path = fullPath?.split("/").pop()?.split("-").pop()?.split(".")[0];
+    console.log(path);
+
+    const token = Cookies.get("authToken")
+    const api = createApi(token);
+
+    try {
+      const response = await api.delete(`api/pets/${petId}/images/${path}`);
+      if (response.data.error) {
+        toast.error("Erro ao remover imagem");
+        console.error(response.data.message);
+        return;
+      }
+
+      setPet(pet ? { ...pet, images: pet.images.filter((_, i) => i !== index) } : undefined);
+      toast.success("Imagem removida com sucesso!");
+    } catch (error) {
+      toast.error("Erro interno do servidor")
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,23 +67,19 @@ export default function EditPetPage() {
     const token = Cookies.get("authToken")
     const api = createApi(token);
 
-    const updatePet = async (petId: string) => {
-      try {
-        const response = await api.put(`api/pets/${petId}`, payload);
-        if (response.data.error) {
-          console.error(response.data.message);
-          return;
-        }
-
-        toast.success("Pet atualizado com sucesso!");
-        console.log(response.data.message);
-      } catch (error) {
-        console.log(error);
-        toast.error("Erro ao atualizar pet");
+    try {
+      const response = await api.put(`api/pets/${petId}`, payload);
+      if (response.data.error) {
+        console.error(response.data.message);
+        return;
       }
-    }
 
-    updatePet(petId);
+      toast.success("Pet atualizado com sucesso!");
+      console.log(response.data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao atualizar pet");
+    }
   }
 
   return (
