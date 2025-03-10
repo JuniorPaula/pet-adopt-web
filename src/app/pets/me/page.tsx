@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { getTokenFromCookie } from "@/services/get-token-from-cookie";
 import { createApi } from "@/services/axios-service";
 import { PetProps } from "@/types/pet.type";
+
+import { RemovePet } from "../components/remove-pet";
 
 async function getMyPets() {
   const token = await getTokenFromCookie();
@@ -104,7 +106,7 @@ export default async function MyPetsPage() {
                           <Link href={`/pets/me/${pet.id}/edit`}>
                             <FaEdit className="text-blue-500 cursor-pointer" size={20} />
                           </Link>
-                          <FaTrash className="text-red-500 cursor-pointer ml-2" size={20} />
+                          <RemovePet petId={pet.id} />
                         </>
                       ) : (
                         <span>-</span>
