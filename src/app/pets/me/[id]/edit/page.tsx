@@ -8,31 +8,35 @@ import { useParams } from "next/navigation";
 import { createApi } from "@/services/axios-service";
 import { PetProps } from "@/types/pet.type";
 import { toast } from "react-toastify";
+import { FaPlusCircle } from "react-icons/fa";
 
 export default function EditPetPage() {
+  const MAX_IMAGES = 12;
+
   const { id: petId } = useParams<{ id: string }>();
   const [pet, setPet] = React.useState<PetProps>();
+  const [files, setFiles] = React.useState<File[]>([]);
+  const [alertMaxImages, setAlertMaxImages] = React.useState(false);
+
+  const getPet = async (id: string) => {
+    const token = Cookies.get("authToken")
+    const api = createApi(token);
+
+    const response = await api.get(`api/pets/${id}/me`);
+    const data = response.data;
+
+    if (!data.error) {
+      setPet(data.data);
+    }
+  }
 
   React.useEffect(() => {
-    const getPet = async (id: string) => {
-      const token = Cookies.get("authToken")
-      const api = createApi(token);
-
-      const response = await api.get(`api/pets/${id}/me`);
-      const data = response.data;
-
-      if (!data.error) {
-        setPet(data.data);
-      }
-    }
-
     getPet(petId)
   }, [petId]);
 
   const handleRemoveImage = async (index: number) => {
     const fullPath = pet?.images[index];
     const path = fullPath?.split("/").pop()?.split("-").pop()?.split(".")[0];
-    console.log(path);
 
     const token = Cookies.get("authToken")
     const api = createApi(token);
@@ -70,15 +74,53 @@ export default function EditPetPage() {
     try {
       const response = await api.put(`api/pets/${petId}`, payload);
       if (response.data.error) {
-        console.error(response.data.message);
+        console.error("Erro ao atualizar pet");
         return;
       }
 
       toast.success("Pet atualizado com sucesso!");
-      console.log(response.data.message);
     } catch (error) {
       console.log(error);
-      toast.error("Erro ao atualizar pet");
+      toast.error("Erro interno do servidor");
+    }
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || []);
+
+    if (selectedFiles.length > MAX_IMAGES) {
+      setAlertMaxImages(true);
+      setTimeout(() => { setAlertMaxImages(false) }, 5000);
+    }
+    setFiles(selectedFiles);
+  }
+
+  const handleUpdateImages = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const formData = new FormData();
+
+    files.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    const token = Cookies.get("authToken")
+    const api = createApi(token);
+
+    try {
+      const response = await api.put(`api/pets/${petId}/images`, formData);
+      if (response.data.error) {
+        console.error("Erro ao atualizar imagens");
+        return;
+      }
+
+      toast.success("Imagens atualizadas com sucesso!");
+      setFiles([]);
+
+      getPet(petId);
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro interno do servidor");
     }
   }
 
@@ -86,9 +128,10 @@ export default function EditPetPage() {
     <Container>
       <div className="max-w-screen-xl mx-auto py-6">
         <h1 className="text-2xl font-medium text-neutral-700">Editar Pet</h1>
-        <p className="text-gray-600 mt-2">Aqui você pode editar os dados do seu pet.</p>
+        <p className="text-gray-600 mt-2 mb-0">Aqui você pode editar os dados do seu pet.</p>
+        <p className="text-gray-600">Clique no 'x' para remover a imagens.</p>
       </div>
-      
+
       {/* Images */}
       <div className="grid grid-cols-3 gap-4 mt-4">
         {pet && pet.images.map((path, index) => (
@@ -109,7 +152,7 @@ export default function EditPetPage() {
         ))}
       </div>
 
-      <div className="max-w-screen-xl mx-auto py-6">
+      <main className="max-w-screen-xl mx-auto py-6">
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -180,14 +223,14 @@ export default function EditPetPage() {
           <div className="mt-4">
             <button
               type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm
                 shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2
                 focus:ring-offset-2 focus:ring-blue-500"
             >
               Editar
             </button>
             <Link href="/pets/me"
-              className="inline-flex items-center px-4 py-2 ml-2 border border-transparent text-sm font-medium rounded-md
+              className="inline-flex items-center px-4 py-2 ml-2 border border-transparent text-sm font-medium rounded-sm
               shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2
               focus:ring-offset-2 focus:ring-gray-500"
             >
@@ -195,7 +238,50 @@ export default function EditPetPage() {
             </Link>
           </div>
         </form>
+      </main>
+
+      <br />
+      <hr />
+      <br />
+
+      {/* Add Image */}
+
+      <div className="max-w-screen-xl mx-auto py-6">
+        {alertMaxImages && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong className="font-bold">Ops!</strong>
+            <span className="block sm:inline"> Você atingiu o limite de imagens ({MAX_IMAGES}).</span>
+          </div>
+        )}
       </div>
+
+      <section className="max-w-screen-xl mx-auto py-8">
+        <form onSubmit={handleUpdateImages}>
+          <h2 className="text-2xl font-medium text-neutral-700">Adicionar Imagem</h2>
+          <p className="text-gray-600 mt-2">Adicione uma nova imagem para o seu pet.</p>
+          <div className="mt-4">
+            <label htmlFor="images" className="block text-sm font-medium text-gray-700">Imagem</label>
+            <input
+              type="file"
+              id="images"
+              multiple
+              accept=".jpg,.jpeg,.png"
+              className="w-50 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+              onChange={handleFileChange}
+            />
+          <p className="text-sm text-gray-500 mb-3">O limite máximo de images é {MAX_IMAGES}. São permitidas apenas images (png, jpg e jpeg)</p>
+          </div>
+          <button
+            type="submit"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm
+              shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2
+              focus:ring-offset-2 focus:ring-green-500"
+          >
+            <FaPlusCircle className="mr-2" />
+            Adicionar
+          </button>
+        </form>
+      </section>
     </Container>
   )
 }
