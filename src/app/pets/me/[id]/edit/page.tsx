@@ -134,7 +134,7 @@ export default function EditPetPage() {
 
       {/* Images */}
       <div className="grid grid-cols-3 gap-4 mt-4">
-        {pet && pet.images.map((path, index) => (
+        {pet && pet.images?.map((path, index) => (
           <div key={index} className="relative border p-2">
             <button
               type="button"
