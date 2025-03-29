@@ -1,6 +1,73 @@
+"use client";
 import { Container } from "@/components/container";
+import { UserProps } from "@/types/user.type";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { createApi } from "@/services/axios-service";
+
+import Cookies from "js-cookie";
+
+type UserFormData = UserProps & {
+  password?: string;
+}
 
 export default function ProfilePage() {
+  const [ user, setUser ] = useState<UserFormData>();
+
+  useEffect(() => {
+    const token = Cookies.get("authToken");
+    const api = createApi(token);
+
+    const fetchUser = async () => {
+      try {
+        const response = await api.get("/api/users/profile");
+        if (response.data.error) {
+          console.error(response.data.message);
+          return;
+        }
+        setUser(response.data.data);
+      } catch (error: any) {
+        console.error(error.response?.data);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      email: user?.email,
+      password: user?.password,
+      details: {
+        phone: user?.details?.phone,
+        address: user?.details?.address,
+        city: user?.details?.city,
+        province: user?.details?.province,
+        zip_code: user?.details?.zip_code,
+      },
+    }
+
+    const token = Cookies.get("authToken");
+    const api = createApi(token);
+    try {
+      const response = await api.put("/api/users/profile", payload);
+      if (response.data.error) {
+        console.error(response.data.message);
+        toast.error("Ops! Ocorreu um erro ao atualizar o perfil.");
+        return;
+      }
+      setUser(response.data.data);
+      toast.success("Perfil atualizado com sucesso!");
+    }
+    catch (error: any) {
+      console.error(error.response?.data);
+      toast.error("Erro Interno no Servidor.");
+    }
+  }
+
   return (
     <div className="w-full">
       <Container>
@@ -13,23 +80,47 @@ export default function ProfilePage() {
           <section className="overflow-x-auto border p-3 mb-6 border-gray-200">
             <div className="bg-white p-6">
               <h2 className="text-xl font-semibold text-neutral-600 mb-4">Informações Pessoais</h2>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">Nome</label>
-                  <input type="text" id="first_name" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input 
+                    type="text"
+                    id="first_name"
+                    value={user?.first_name ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, first_name: e.target.value } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                   />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">Sobrenome</label>
-                  <input type="text" id="last_name" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input 
+                    type="text"
+                    id="last_name"
+                    value={user?.last_name ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, last_name: e.target.value } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                  <input type="email" id="email" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="email"
+                    id="email"
+                    value={user?.email ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, email: e.target.value } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
 
                 <div className="mb-4">
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">Senha</label>
-                  <input type="password" id="password" className="w-full p-2 mb-0 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="********"
+                    onChange={(e) => setUser( user ? { ...user, password: e.target.value } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-0 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                   <span className="text-gray-500 text-sm">Deixe em branco para manter a senha atual.</span>
                 </div>
                 <button 
@@ -47,28 +138,58 @@ export default function ProfilePage() {
           <section className="overflow-x-auto border p-3 mt-6 border-gray-200">
             <div className="bg-white p-6">
               <h2 className="text-xl font-semibold text-neutral-600 mb-4">Informações Adicionais</h2>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Telefone</label>
-                  <input type="text" id="phone" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="text"
+                    id="phone"
+                    value={user?.details?.phone ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, details: { ...user.details, phone: e.target.value } } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="address" className="block text-sm font-medium text-gray-700">Rua</label>
-                  <input type="text" id="address" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="text"
+                    id="address"
+                    value={user?.details?.address ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, details: { ...user.details, address: e.target.value } } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="city" className="block text-sm font-medium text-gray-700">Cidade</label>
-                  <input type="text" id="city" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="text"
+                    id="city"
+                    value={user?.details?.city ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, details: { ...user.details, city: e.target.value } } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
 
                 <div className="mb-4">
                   <label htmlFor="province" className="block text-sm font-medium text-gray-700">Estado</label>
-                  <input type="text" id="province" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="text"
+                    id="province"
+                    value={user?.details?.province ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, details: { ...user.details, province: e.target.value } } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
 
                 <div className="mb-4">
                   <label htmlFor="zip_code" className="block text-sm font-medium text-gray-700">CEP</label>
-                  <input type="text" id="zip_code" className="w-full p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm" />
+                  <input
+                    type="text"
+                    id="zip_code"
+                    value={user?.details?.zip_code ?? ""}
+                    onChange={(e) => setUser( user ? { ...user, details: { ...user.details, zip_code: e.target.value } } : undefined)}
+                    className="w-full text-neutral-600 p-2 mb-3 mt-2 border border-gray-300 rounded-sm shadow-sm sm:text-sm"
+                  />
                 </div>
                 <button 
                   type="submit" 
