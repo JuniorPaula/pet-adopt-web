@@ -50,15 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode}) => {
     }
   }, [])
 
-  // verify token on window focus event
-  useEffect(() => {
-    window.addEventListener("focus", checkToken)
-
-    return () => {
-      window.removeEventListener("focus", checkToken)
-    }
-  }, [])
-
   // verify token on storage change event
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {

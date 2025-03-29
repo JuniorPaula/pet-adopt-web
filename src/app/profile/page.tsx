@@ -7,12 +7,14 @@ import { createApi } from "@/services/axios-service";
 
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 
 type UserFormData = UserProps & {
   password?: string;
 }
 
 export default function ProfilePage() {
+  const { logout } = useAuth();
   const [ user, setUser ] = useState<UserFormData>();
   const [ isOpen, setIsOpen ] = useState(false);
   const [ confirmName, setConfirmName ] = useState("");
@@ -86,6 +88,9 @@ export default function ProfilePage() {
           }
           toast.success("Conta excluída com sucesso!");
           Cookies.remove("authToken");
+          logout();
+          setUser(undefined);
+          setIsOpen(false);
           router.push("/");
         })
         .catch((error: any) => {
