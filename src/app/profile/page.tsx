@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { createApi } from "@/services/axios-service";
 
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 type UserFormData = UserProps & {
   password?: string;
@@ -13,6 +14,10 @@ type UserFormData = UserProps & {
 
 export default function ProfilePage() {
   const [ user, setUser ] = useState<UserFormData>();
+  const [ isOpen, setIsOpen ] = useState(false);
+  const [ confirmName, setConfirmName ] = useState("");
+  const router = useRouter();
+  const userName = user?.first_name + " " + user?.last_name;
 
   useEffect(() => {
     const token = Cookies.get("authToken");
@@ -67,6 +72,28 @@ export default function ProfilePage() {
       toast.error("Erro Interno no Servidor.");
     }
   }
+
+  const handleDelete = () => {
+    if (confirmName === userName) {
+      const token = Cookies.get("authToken");
+      const api = createApi(token);
+      api.delete("/api/users/profile")
+        .then((response) => {
+          if (response.data.error) {
+            console.error(response.data.message);
+            toast.error("Ops! Ocorreu um erro ao excluir a conta.");
+            return;
+          }
+          toast.success("Conta excluída com sucesso!");
+          Cookies.remove("authToken");
+          router.push("/");
+        })
+        .catch((error: any) => {
+          console.error(error.response?.data);
+          toast.error("Erro Interno no Servidor.");
+        });
+      }
+  };
 
   return (
     <div className="w-full">
@@ -210,6 +237,7 @@ export default function ProfilePage() {
               <h2 className="text-xl font-semibold text-red-600 mb-4">Dange Zone</h2>
               <p className="text-red-500 mb-4">Essa ação não pode ser desfeita.</p>
               <button
+                onClick={() => setIsOpen(true)}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm
                 shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2
                 focus:ring-offset-2 focus:ring-red-500"
@@ -218,6 +246,45 @@ export default function ProfilePage() {
               </button>
             </div>
           </section>
+
+          {isOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+                  <h3 className="text-lg font-bold text-gray-700 mb-4">Tem certeza que deseja excluir a conta?</h3>
+                  <p className="mb-4 text-gray-700">
+                    Digite <span className="font-semibold">{userName}</span> para confirmar a exclusão da sua conta.
+                  </p>
+
+                  <input
+                    type="text"
+                    placeholder="Digite seu nome"
+                    value={confirmName}
+                    onChange={(e) => setConfirmName(e.target.value)}
+                    className="w-full px-3 py-2 border rounded mb-4 text-gray-700"
+                  />
+
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => setIsOpen(false)}
+                      className="px-4 py-2 border rounded hover:bg-gray-100"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      disabled={confirmName !== userName}
+                      className={`px-4 py-2 rounded text-white ${
+                        confirmName === userName
+                          ? "bg-red-600 hover:bg-red-700"
+                          : "bg-red-300 cursor-not-allowed"
+                      }`}
+                    >
+                      Confirmar Exclusão
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
         </main>
       </Container>
     </div>
