@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { FaWhatsapp } from "react-icons/fa";
 
 export function CardDetals(visit: VisitProps) {
 
@@ -90,7 +91,16 @@ export function CardDetals(visit: VisitProps) {
           </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-lg font-medium text-neutral-700">Celular</span>
-            <span className="text-lg">55 47 993454323</span>
+            <span className="text-lg">
+              <div className="flex items-center gap-2">
+                <FaWhatsapp className="inline-block mr-1 text-green-500" size={24} />
+                <a href={`https://wa.me/${visit.user?.details?.phone}`}
+                className="text-gray-900 hover:text-blue-600"
+                  target="_blank" rel="noopener noreferrer">
+                  { visit.user?.details?.phone }
+                </a>
+              </div>
+            </span>
           </div>
         </div>
 

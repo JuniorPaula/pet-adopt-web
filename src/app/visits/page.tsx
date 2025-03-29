@@ -3,6 +3,7 @@ import { createApi } from "@/services/axios-service";
 import { getTokenFromCookie } from "@/services/get-token-from-cookie";
 import { VisitProps } from "@/types/visit.type";
 import Link from "next/link";
+import { FaWhatsapp } from "react-icons/fa";
 
 enum VisitStatus {
   Completed = "completed",
@@ -61,7 +62,16 @@ export default async function VisitsPage() {
                     </Link>
                   </td>
                   <td className="border border-gray-300 px-4 py-2">{visit.pet.owner.first_name}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">4799999999999</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">
+                    <div className="flex items-center gap-2">
+                      <FaWhatsapp className="inline-block mr-1 text-green-500" size={24} />
+                      <a href={`https://wa.me/${visit.pet.owner?.details?.phone}`}
+                      className="text-gray-900 hover:text-blue-600"
+                        target="_blank" rel="noopener noreferrer">
+                        { visit.pet.owner?.details?.phone }
+                      </a>
+                    </div>
+                  </td>
                   <td className={`border border-gray-300 px-4 py-2 text-center ${
                     visit.status === VisitStatus.Completed ? 'text-green-500' :
                     visit.status === VisitStatus.Pending ? 'text-yellow-500' :

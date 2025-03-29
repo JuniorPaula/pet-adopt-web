@@ -57,7 +57,7 @@ export default async function AdoptionDetailsPage({
               <h2 className="text-lg text-neutral-700 font-bold">Detalhes do antigo tutor</h2>
               <p className="text-gray-600 text-sm">Nome: {adoption.old_owner.first_name} {adoption.old_owner?.last_name ?? ''}</p>
               <p className="text-gray-600 text-sm">Email: {adoption.old_owner.email}</p>
-              <p className="text-gray-600 text-sm">Telefone: 47 9999999999</p>
+              <p className="text-gray-600 text-sm">Telefone: {adoption.old_owner.details?.phone}</p>
             </div>
           </div>
         </div>

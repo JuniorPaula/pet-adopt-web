@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { createApi } from "@/services/axios-service";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { FaWhatsapp } from "react-icons/fa";
 
 
 export function PetDetails(pet: PetProps) {
@@ -109,8 +110,21 @@ export function PetDetails(pet: PetProps) {
           <br />
 
           <h3 className="mb-2 text-lg text-slate-800">Dados do Tutor:</h3>
-          <p className="text-gray-700 mb-2"><strong>Nome:</strong> James foo</p>
-          <p className="text-gray-700 mb-2"><strong>Telefone:</strong> +55 47 991678787</p>
+          <p className="text-gray-700 mb-2"><strong>Nome:</strong>
+            <div>
+              { pet.owner.first_name } { pet.owner?.last_name }
+            </div>
+          </p>
+          <p className="text-gray-700 mb-2"><strong>Telefone: </strong>
+           <div className="mb-2">
+              <FaWhatsapp className="inline-block mr-1 text-green-500" size={24} />
+              <a href={`https://wa.me/${pet.owner?.details?.phone}?text=Olá!%20Estou%20interessado%20em%20adotar%20o%20pet%20${pet.name}.`}
+              className="text-blue-500 hover:text-blue-600"
+                 target="_blank" rel="noopener noreferrer">
+                { pet.owner?.details?.phone }
+              </a>
+           </div>
+           </p>
 
           <button 
             className={`w-full mb-4 mt-2 text-white p-2 ${
