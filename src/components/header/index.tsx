@@ -38,7 +38,7 @@ export function Header() {
                     <div className="py-2">
                       <MenuItem>
                           <Link
-                            href="/perfil"
+                            href="/profile"
                             className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
                           >
                             Meu perfil
