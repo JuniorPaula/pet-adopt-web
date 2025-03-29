@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("authToken");
-  const { pathname } = request.nextUrl
+  const pathname = request.nextUrl.pathname.replace(/\/+$/, "") || "/";
   
   const publicPaths = ["/", "/login", "/register", "/pets"]
 
