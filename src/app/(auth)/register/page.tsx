@@ -38,7 +38,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="w-full flex justify-center items-center px-4 py-6 bg-slate-100" style={{ height: "calc(100vh - 80px)" }}>
+    <main className="w-full flex justify-center items-center px-4 py-6 bg-slate-100">
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 shadow-md w-full max-w-md space-y-4 my-9">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">Registrar-se</h2>
 

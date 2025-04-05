@@ -99,32 +99,43 @@ export function PetDetails(pet: PetProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 mt-7 py-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         {/* Lado Esquerdo - Informações do Pet */}
         <div className="pr-5">
           <h2 className="text-3xl text-slate-800 mb-4">{pet.name}</h2>
-          <p className="text-gray-700 mb-2"><strong>Port:</strong> {pet.size}</p>
-          <p className="text-gray-700 mb-2"><strong>Idade:</strong> {pet.age}</p>
-          <p className="text-gray-700 mb-4"><strong>Peso:</strong> {pet.weight}</p>
 
-          <br />
+          <div className="my-6 p-2 border-2 border-gray-100">
+            <h3 className="text-slate-800 text-xl mb-2">Uma breve descrição</h3>
+            <p className="text-gray-700 leading-relaxed">
+              { pet.description.length > 0 ? pet.description : "Nenhuma descrição disponível." }
+            </p>
+          </div>
 
-          <h3 className="mb-2 text-lg text-slate-800">Dados do Tutor:</h3>
-          <p className="text-gray-700 mb-2"><strong>Nome:</strong>
-            <div>
-              { pet.owner.first_name } { pet.owner?.last_name }
+          <div className="my-6 p-2 border-2 border-gray-100">
+            <h3 className="text-slate-800 text-xl mb-2">Dados do Pet:</h3>
+            <p className="text-gray-700 mb-2"><strong>Port:</strong> {pet.size}</p>
+            <p className="text-gray-700 mb-2"><strong>Idade:</strong> {pet.age}</p>
+            <p className="text-gray-700 mb-4"><strong>Peso:</strong> {pet.weight}</p>
+          </div>
+
+          <div className="my-6 p-2 border-2 border-gray-100">
+            <h3 className="text-slate-800 text-xl mb-2">Dados do Tutor:</h3>
+            <p className="text-gray-700 mb-2"><strong>Nome:</strong>
+              <div>
+                { pet.owner.first_name } { pet.owner?.last_name }
+              </div>
+            </p>
+            <p className="text-gray-700 mb-2"><strong>Telefone: </strong>
+            <div className="mb-2">
+                <FaWhatsapp className="inline-block mr-1 text-green-500" size={24} />
+                <a href={`https://wa.me/${pet.owner?.details?.phone}?text=Olá!%20Estou%20interessado%20em%20adotar%20o%20pet%20${pet.name}.`}
+                className="text-blue-500 hover:text-blue-600"
+                  target="_blank" rel="noopener noreferrer">
+                  { pet.owner?.details?.phone }
+                </a>
             </div>
-          </p>
-          <p className="text-gray-700 mb-2"><strong>Telefone: </strong>
-           <div className="mb-2">
-              <FaWhatsapp className="inline-block mr-1 text-green-500" size={24} />
-              <a href={`https://wa.me/${pet.owner?.details?.phone}?text=Olá!%20Estou%20interessado%20em%20adotar%20o%20pet%20${pet.name}.`}
-              className="text-blue-500 hover:text-blue-600"
-                 target="_blank" rel="noopener noreferrer">
-                { pet.owner?.details?.phone }
-              </a>
-           </div>
-           </p>
+            </p>
+          </div>
 
           <button 
             className={`w-full mb-4 mt-2 text-white p-2 ${
@@ -138,12 +149,7 @@ export function PetDetails(pet: PetProps) {
         </div>
 
         {/* Lado Direito - Descrição */}
-        <div className="pl-6">
-          <h3 className="text-slate-800 text-2xl mb-2">Uma breve descrição</h3>
-          <p className="text-gray-700 leading-relaxed">
-            { pet.description.length > 0 ? pet.description : "Nenhuma descrição disponível." }
-          </p>
-        </div>
+        
       </div>
 
       <AnimatePresence>

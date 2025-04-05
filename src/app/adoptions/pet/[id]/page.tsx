@@ -33,7 +33,7 @@ export default async function AdoptionDetailsPage({
     <Container>
         <h1 className="text-2xl mt-4">Detalhes da adoção</h1>
         <p className="text-slate-700">Aqui você pode ver os detalhes da adoção do pet.</p>
-        <div className="max-w-screen-xl mx-auto py-6 flex">
+        <div className="max-w-screen-xl mx-auto py-6 flex flex-col">
           <div>
             <Image
               src={adoption.pet?.images?.[0] ? `${process.env.NEXT_PUBLIC_API_URL}${adoption.pet.images[0]}` : defaultImage}
@@ -43,9 +43,9 @@ export default async function AdoptionDetailsPage({
               height={650}
             />
           </div>
-          <div className="flex flex-col ml-4">
+          <div className="flex flex-col mt-4">
             <div>
-              <h2 className="text-lg text-neutral-700 font-bold">Detalhes do pet</h2>
+              <h2 className="text-xl text-blue-700 font-bold">Detalhes do pet</h2>
               <h2 className="text-lg text-neutral-700 font-bold">{adoption.pet.name}</h2>
               <p className="text-gray-600 text-sm">Idade: {adoption.pet.age}</p>
               <p className="text-gray-600 text-sm">Peso: {adoption.pet.weight}</p>

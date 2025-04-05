@@ -9,3 +9,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.main-container {
+  height: calc(100vh - 80px);
+}
+
+@media (min-width: 640px) {
+  .main-container {
+    height: calc(100vh - 80px);
+  }
+}

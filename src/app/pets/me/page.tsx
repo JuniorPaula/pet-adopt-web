@@ -55,13 +55,13 @@ export default async function MyPetsPage() {
           <table className="table-none sm:tab</div>le-auto border-separate border border-gray-400 w-full">
             <thead>
               <tr>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">#</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Foto</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Nome</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Idade</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Peso</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Porte</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Cor</th>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Disponível</th>
+                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Status</th>
                 <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Ações</th>
               </tr>
             </thead>
