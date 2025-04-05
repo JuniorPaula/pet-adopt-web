@@ -38,6 +38,16 @@ export function Header() {
                     <div className="py-2">
                       <MenuItem>
                           <Link
+                            href="/dashboard"
+                            className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
+                          >
+                            Dashboard
+                          </Link>
+                      </MenuItem>
+                      <MenuSeparator className="my-1 h-px bg-gray-300" />
+
+                      <MenuItem>
+                          <Link
                             href="/profile"
                             className="block px-4 py-2 text-sm hover:bg-blue-300 transition-colors duration-200"
                           >
