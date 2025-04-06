@@ -2,7 +2,10 @@
 
 import { useAuth } from "@/context/auth-context";
 import { Menu, MenuButton, MenuItem, MenuItems, MenuSeparator } from "@headlessui/react";
+import Image from "next/image";
 import Link from "next/link";
+
+const logo = "/assets/pet-adopt-logo.png";
 
 export function Header() {
   const { user, logout } = useAuth();
@@ -12,7 +15,15 @@ export function Header() {
       <div className="max-w-screen-xl mx-auto flex items-center justify-between h-20 sm:justify-between">
         <nav className="flex items-center justify-center">
           <Link href="/" className="text-2xl font-bold">
-            Pet<span className="text-blue-700">Adopt</span>
+            <Image
+              src={logo}
+              alt="Logo Pet Adopt"
+              width={100}
+              height={100}
+              className="h-10 w-auto"
+              quality={100}
+              priority
+            />
           </Link>
         </nav>
 

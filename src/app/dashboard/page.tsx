@@ -94,16 +94,17 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <div className="max-w-screen-xl mx-auto py-6">
-          {data.adoptions.length === 0 && (
-            <p className="text-gray-600">Não há nenhuma adoação.</p>
-          )}
-        </div>
-
         <section className="overflow-x-auto mt-8">
+          <h2 className="text-xl sm:text-2xl text-neutral-700 font-normal mb-4">Ultimas adoções</h2>
+
+          <div className="max-w-screen-xl mx-auto py-6">
+            {data.adoptions.length === 0 && (
+              <p className="text-gray-600">Não há nenhuma adoação.</p>
+            )}
+          </div>
+
           {data.adoptions.length > 0 && (
             <div>
-              <h2 className="text-xl sm:text-2xl text-neutral-700 font-normal mb-4">Ultimas adoções</h2>
               <table className="table-none sm:table-auto border-separate border border-gray-400 w-full">
                 <thead>
                   <tr>
@@ -117,11 +118,11 @@ export default async function DashboardPage() {
                   {data.adoptions.map((adopt: AdoptProps, index: number) => (
                     <tr key={index}>
                       <td className="border border-gray-300 px-4 py-2">
-                        <span className="text-gray-800">{ adopt?.pet?.name }</span>
+                        <span className="text-gray-800">{adopt?.pet?.name}</span>
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">{ adopt?.adopter?.first_name}</td>
-                      <td className="border border-gray-300 px-4 py-2 text-center">{ adopt?.adopter?.details?.phone }</td>
-                      <td className="border border-gray-300 px-4 py-2 text-center">{ convertDate(adopt.adopt_date) }</td>
+                      <td className="border border-gray-300 px-4 py-2">{adopt?.adopter?.first_name}</td>
+                      <td className="border border-gray-300 px-4 py-2 text-center">{adopt?.adopter?.details?.phone}</td>
+                      <td className="border border-gray-300 px-4 py-2 text-center">{convertDate(adopt.adopt_date)}</td>
                     </tr>
                   ))}
                 </tbody>
