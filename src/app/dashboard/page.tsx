@@ -1,10 +1,34 @@
 import { Container } from "@/components/container";
 import { MenuSeparator } from "@headlessui/react";
-import Link from "next/link";
 import { FaBook, FaShareAlt } from "react-icons/fa";
 import { FaChartSimple, FaShareFromSquare } from "react-icons/fa6";
+import { getTokenFromCookie } from "@/services/get-token-from-cookie";
+import { createApi } from "@/services/axios-service";
+import Link from "next/link";
 
-export default function DashboardPage() {
+interface AdoptionMetrics {
+  adoption_count: number;
+  visit_count: number;
+  visit_scheduled_count: number;
+}
+
+async function getData() {
+  const token = await getTokenFromCookie();
+  const api = createApi(token);
+  
+  try {
+    const response = await api.get(`/api/adopts/metrics`);
+    return response.data.data;
+
+  } catch (error: any) {
+    console.error(error.response?.data);
+    return null;
+  }
+}
+
+export default async function DashboardPage() {
+  const data: AdoptionMetrics = await getData();
+
   return (
     <Container>
       <main className="max-w-screen-xl mx-auto py-6">
@@ -45,21 +69,21 @@ export default function DashboardPage() {
                 <FaChartSimple className="text-green-600" size={28} />
                 <p className="text-gray-600 text-lg font-semibold">Total de adoções: </p>
               </div>
-              <span className="text-2xl text-gray-600">5</span>
+              <span className="text-2xl text-gray-600">{ data.adoption_count }</span>
             </div>
             <div className="shadow-md rounded-sm px-4 py-8 flex items-center justify-between gap-2 bg-blue-100 border border-blue-300">
               <div>
                 <FaShareAlt className="text-blue-600" size={28} />
                 <p className="text-gray-600 text-lg font-semibold">Adoções pendentes: </p>
               </div>
-              <span className="text-2xl text-gray-600">2</span>
+              <span className="text-2xl text-gray-600">{ data.visit_count }</span>
             </div>
             <div className="shadow-md rounded-sm px-4 py-8 flex items-center justify-between gap-2 bg-yellow-100 border border-yellow-300">
               <div>
                 <FaBook className="text-yellow-600" size={28} />
                 <p className="text-gray-600 text-lg font-semibold">Visitas agendadas: </p>
               </div>
-              <span className="text-2xl text-gray-500">3</span>
+              <span className="text-2xl text-gray-500">{ data.visit_scheduled_count }</span>
             </div>
           </div>
         </section>
