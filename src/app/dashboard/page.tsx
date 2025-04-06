@@ -1,21 +1,25 @@
 import { Container } from "@/components/container";
-import { MenuSeparator } from "@headlessui/react";
 import { FaBook, FaShareAlt } from "react-icons/fa";
 import { FaChartSimple, FaShareFromSquare } from "react-icons/fa6";
 import { getTokenFromCookie } from "@/services/get-token-from-cookie";
 import { createApi } from "@/services/axios-service";
+import { AdoptProps } from "@/types/adopt.type";
+import { HeaderDashboard } from "./components/header-dashboard";
 import Link from "next/link";
 
 interface AdoptionMetrics {
-  adoption_count: number;
-  visit_count: number;
-  visit_scheduled_count: number;
+  adoptions: AdoptProps[];
+  meta: {
+    adoption_count: number;
+    visit_count: number;
+    visit_scheduled_count: number;
+  }
 }
 
 async function getData() {
   const token = await getTokenFromCookie();
   const api = createApi(token);
-  
+
   try {
     const response = await api.get(`/api/adopts/metrics`);
     return response.data.data;
@@ -26,15 +30,17 @@ async function getData() {
   }
 }
 
+function convertDate(date: string): string {
+  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
+}
+
 export default async function DashboardPage() {
   const data: AdoptionMetrics = await getData();
 
   return (
     <Container>
       <main className="max-w-screen-xl mx-auto py-6">
-        <h1 className="text-2xl sm:text-3xl text-neutral-700 font-bold">Olá, Fulano de Tal</h1>
-        <p className="py-2 text-gray-600">Bem-vindo ao seu painel de controle!</p>
-        <MenuSeparator className="my-1 mb-8 h-px bg-gray-300" />
+        <HeaderDashboard />
 
         <section>
           <h2 className="text-xl sm:text-2xl text-neutral-700 font-normal">Acesso rápido</h2>
@@ -69,48 +75,61 @@ export default async function DashboardPage() {
                 <FaChartSimple className="text-green-600" size={28} />
                 <p className="text-gray-600 text-lg font-semibold">Total de adoções: </p>
               </div>
-              <span className="text-2xl text-gray-600">{ data.adoption_count }</span>
+              <span className="text-2xl text-gray-600">{data.meta.adoption_count}</span>
             </div>
             <div className="shadow-md rounded-sm px-4 py-8 flex items-center justify-between gap-2 bg-blue-100 border border-blue-300">
               <div>
                 <FaShareAlt className="text-blue-600" size={28} />
                 <p className="text-gray-600 text-lg font-semibold">Adoções pendentes: </p>
               </div>
-              <span className="text-2xl text-gray-600">{ data.visit_count }</span>
+              <span className="text-2xl text-gray-600">{data.meta.visit_count}</span>
             </div>
             <div className="shadow-md rounded-sm px-4 py-8 flex items-center justify-between gap-2 bg-yellow-100 border border-yellow-300">
               <div>
                 <FaBook className="text-yellow-600" size={28} />
                 <p className="text-gray-600 text-lg font-semibold">Visitas agendadas: </p>
               </div>
-              <span className="text-2xl text-gray-500">{ data.visit_scheduled_count }</span>
+              <span className="text-2xl text-gray-500">{data.meta.visit_scheduled_count}</span>
             </div>
           </div>
         </section>
 
+        <div className="max-w-screen-xl mx-auto py-6">
+          {data.adoptions.length === 0 && (
+            <p className="text-gray-600">Não há nenhuma adoação.</p>
+          )}
+        </div>
+
         <section className="overflow-x-auto mt-8">
-          <h2 className="text-xl sm:text-2xl text-neutral-700 font-normal mb-4">Ultimas adoções</h2>
-          <table className="table-none sm:tab</div>le-auto border-separate border border-gray-400 w-full">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Nome do Pet</th>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Quem Adotou</th>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Telefone</th>
-                <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Data da adoção</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">
-                  <span className="text-gray-800">Bob</span>
-                </td>
-                <td className="border border-gray-300 px-4 py-2">Jasminie Santos</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">55 9889876734</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">12/05/2025</td>
-              </tr>
-            </tbody>
-          </table>
+          {data.adoptions.length > 0 && (
+            <div>
+              <h2 className="text-xl sm:text-2xl text-neutral-700 font-normal mb-4">Ultimas adoções</h2>
+              <table className="table-none sm:table-auto border-separate border border-gray-400 w-full">
+                <thead>
+                  <tr>
+                    <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Nome do Pet</th>
+                    <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Quem Adotou</th>
+                    <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Telefone</th>
+                    <th className="border border-gray-300 px-4 py-2 font-medium bg-gray-200">Data da adoção</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.adoptions.map((adopt: AdoptProps, index: number) => (
+                    <tr key={index}>
+                      <td className="border border-gray-300 px-4 py-2">
+                        <span className="text-gray-800">{ adopt?.pet?.name }</span>
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">{ adopt?.adopter?.first_name}</td>
+                      <td className="border border-gray-300 px-4 py-2 text-center">{ adopt?.adopter?.details?.phone }</td>
+                      <td className="border border-gray-300 px-4 py-2 text-center">{ convertDate(adopt.adopt_date) }</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
+
       </main>
     </Container>
   );
