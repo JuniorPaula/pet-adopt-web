@@ -55,8 +55,8 @@ export function PetsList() {
 
     <div>
       <section className="grid gap-7 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {pets.map((pet) => (
-          <div key={pet.id} className="bg-white py-4">
+        {pets.map((pet, index) => (
+          <div key={index} className="bg-white py-4">
             <div className="relative w-full h-48 hover:transform hover:scale-105 transition-all duration-300">
               <Image
                 src={pet?.images?.[0] ? `${process.env.NEXT_PUBLIC_API_URL}${pet.images[0]}` : defaultImage}
